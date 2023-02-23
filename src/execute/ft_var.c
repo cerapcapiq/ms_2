@@ -14,6 +14,20 @@ struct node* ft_link_env()
     return head_ref;
 }
 
+
+void get_env()
+{
+  char **s = environ;
+  int i = 0;
+
+  while (s[i] != NULL) 
+  {
+    printf("[%d] = %s \n",i, s[i]);
+    i++;
+  }
+    return;
+}
+
 /*void check_old_path()
 {
       char **s = environ;
@@ -34,7 +48,7 @@ char * get_arg_to_del(char *lineptr)
     char *arg = str;
     char after[j];
 
-    if ((arg = strchr(str, ' '))) 
+    if ((arg = ft_strchr(str, ' ')) || (arg = ft_strchr(str, '$'))) 
     {
         size_t len = strlen (++arg);
         if (len > j - 1) 
@@ -66,23 +80,25 @@ void show_var(char *lineptr, struct node *head)
         }
  }
 
-struct node* delete_var(char *lineptr, struct node* head)
+void delete_var(char *lineptr, struct node* head_ref)
 {
     struct node *tmp;
-    struct node* temp = head; 
+    char *str = lineptr;
+    struct node* temp = head_ref; 
     char *p;
 
-    p = get_arg_to_del(lineptr);
+    if (ft_strchr(str, ' ')) || (t_strchr(str, '$'))) 
+        p = get_arg_to_del(lineptr);
     printf("$var to be unset is %s", p);
-    if (strstr(head->data, p))
+    if (strstr(head_ref->data, p))
     {
         printf("\nFirst element deleted is : %s\n", temp->data);
-        head = temp->nxtpointer; // Advancing the head pointer
+        head_ref = temp->nxtpointer; // Advancing the head pointer
         temp->nxtpointer = NULL;
         free(temp); // Node is deleted
     }
     else 
-    {   struct node *current = head;
+    {   struct node *current = head_ref;
         while(current->nxtpointer != NULL)
         {
             if (strstr(current->nxtpointer->data, p)) 
@@ -97,22 +113,61 @@ struct node* delete_var(char *lineptr, struct node* head)
                 current = current->nxtpointer;
         }
     }
-    return (head);
 }
 
-void ft_linked_list(char *cpy)
+struct node * del_path(char *now)
 {
-    //head_ref = ft_link_env();
-    //check_old_path();
+      char **s = &now;
+      int i = 0;
 
+  while (s[i]) 
+  {
+    if (strstr(s[i], "PATH"))
+	{
+    printf("%s\n [%d] \n", s[i], i);
+	size_t len = ft_strlen(s[i]);
+	memcpy(s[i], now, len);
+	printf("%s\n [%d] \n", s[i], i);
+	}
+    i++;
+  }
+  return (head_ref);
+}
+
+void ft_add_back(char *cpy)
+{
+    struct node *fnNode, *tmp;
+    fnNode = (struct node*)malloc(sizeof(struct node));
+    if(fnNode == NULL)
+    {
+        printf(" Memory can not be allocated.");
+    }
+    else
+    {
+        fnNode->data = cpy;     //Links the data part
+        fnNode->nxtpointer = NULL; 
+        tmp = head_ref;
+        while(tmp->nxtpointer != NULL)
+            tmp = tmp->nxtpointer;
+        tmp->nxtpointer = fnNode;  //Links the address part
+    }
+}
+
+ void ft_linked_list(char *cpy)
+{
     if (ft_strchr(cpy, '='))
-           	head_ref = ft_var_main(cpy, head_ref);  
-    if (ft_strchr(cpy, '$'))
+    	ft_add_back(cpy); 
+    else if (ft_strchr(cpy, '$'))
             show_var(cpy, head_ref);
-    if (strstr(cpy, "unset"))
-            head_ref = delete_var(cpy, head_ref);
-    if (!ft_strcmp(cpy, "env"))
+    else if (strstr(cpy, "unset"))
+          delete_var(cpy, head_ref);
+    else if (!ft_strcmp(cpy, "unset $PATH"))
+            del_path("$PATH=");
+    else if (!ft_strcmp(cpy, "env"))
+     
         display_node(head_ref);
+        //ft_link_env();}
+        //display_node(head_ref);}
     else
         return;
 

@@ -1,6 +1,7 @@
 #include "../include/minishell.h"
 #include "../libft/libft.h"
 
+
 void	parse(t_mini *mini, char *buff)
 {
 	char	**split;

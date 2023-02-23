@@ -48,6 +48,7 @@ int	main(int argc, char *argv[])
 	init_main(argc, argv);
 	mini = init_mini();
 	define_signal();
+	head_ref = ft_link_env();
 	while (1)
 	{
 		buff = NULL;

@@ -31,8 +31,8 @@ struct node* display_node(struct node *head_ref)
     struct node* temp; 
     temp = head_ref; // temp points to head;
     printf("\n");
-    if (temp == NULL)
-        printf(" NULL\n\n");
+    //if (temp == NULL)
+    //    printf(" NULL\n\n");
     while (temp != NULL) {
         if (temp->nxtpointer == NULL) {
             printf(" %s->NULL\n", temp->data);
