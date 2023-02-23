@@ -91,6 +91,7 @@ int		create_pipe(t_mini *mini);
 int		redirect_output(t_mini *ms, t_token *token, int type);
 int		redirect_input(t_mini *ms, t_token *token);
 void	parse(t_mini *mini, char *buff);
+struct node* ft_link_env();
 
 //execute
 int		count_argc(char **args);
@@ -118,7 +119,8 @@ int ft_var(char **argv);
 //signal
 void	define_signal(void);
 void 	disable_veof(void);
-void ft_linked_list(char *cpy);
+
+void ft_linked_list(char *cpy); 
 
 //free
 void	token_free(t_token *tok);
