@@ -34,23 +34,12 @@ void check_old_path()
   }
 }
 
-char * save_old_path(char *now)
+char * save_old_path()
 {
-      char **s = environ;
-      int i = 0;
+      char *s;
 
-  while (s[i]) 
-  {
-    if (strstr(s[i], "OLDPWD"))
-	{
-    printf("%s\n [%d] \n", s[i], i);
-	size_t len = ft_strlen(s[i]);
-	memcpy(s[i], now, len);
-	printf("%s\n [%d] \n", s[i], i);
-	}
-    i++;
-  }
-  return (s[i]);
+	  s = ft_var_content("OLDPWD", head_ref);
+  return (s);
 }
 
 
@@ -75,7 +64,7 @@ int	cd(int argc, char **argv)
 	if (ft_strcmp(argv[1], "-"))
 	{
 		now = getcwd(arg, 1024);
-		curr = save_old_path(now);
+		curr = save_old_path();
 		}
 
 	if (!ft_strcmp(argv[1], "~"))

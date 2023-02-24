@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 #include "../libft/libft.h"
-#define j 2048
+#define j 100000000
 
 struct node* ft_link_env()
 {
@@ -41,7 +41,7 @@ void get_env()
   }
 }
 */
-
+/*
 char * get_arg_to_del(char *lineptr)
 { 
     char *str = lineptr;
@@ -60,7 +60,7 @@ char * get_arg_to_del(char *lineptr)
     }
     return (arg);
 }
-
+*/
 void show_var(char *lineptr, struct node *head)
  {
         if (*lineptr == '$') lineptr++;
@@ -80,15 +80,68 @@ void show_var(char *lineptr, struct node *head)
         }
  }
 
-void delete_var(char *lineptr, struct node* head_ref)
+ char *ft_var_content(char *lineptr, struct node *head)
+ {
+        if (*lineptr == '$') lineptr++;
+        char *contactName = lineptr;
+        char *new = NULL;
+        int i = 1;
+
+        struct node *temp = head;
+        while (temp != NULL)
+        {
+            if (strstr(temp->data, contactName))
+            {
+                new = get_arg_content(temp->data);
+            }
+            temp = temp->nxtpointer;
+            i++;
+        }
+        return new;
+ }
+
+/*
+char *select_var(char *lineptr, struct node *head_ref)
+{
+    if (*lineptr == '$') lineptr++;
+    char *var_chosen = lineptr;
+    int i = 0;
+    
+    struct node* temp = head_ref;
+    while (temp != NULL)
+    {
+        if (strstr(temp->data, var_chosen))
+        {
+            retu
+        }
+    }
+}
+*/
+
+char * get_arg_to_del(char *lineptr)
+{
+size_t i = 0;
+ char *interesting_stuff;
+ while (i<strlen(lineptr)) 
+ {
+     if (lineptr[i] ==  ' ')
+     {
+        interesting_stuff = lineptr + i + 1;
+     }
+     i++;
+ }
+ return interesting_stuff;
+}
+
+struct node * delete_var(char *lineptr, struct node* head_ref)
 {
     struct node *tmp;
-    char *str = lineptr;
     struct node* temp = head_ref; 
     char *p;
 
-    if (ft_strchr(str, ' ')) || (t_strchr(str, '$'))) 
-        p = get_arg_to_del(lineptr);
+    //if ((ft_strchr(str, ' ')) || (ft_strchr(str, '$')))
+    //    str++;
+    p = get_arg_to_del(lineptr);
     printf("$var to be unset is %s", p);
     if (strstr(head_ref->data, p))
     {
@@ -113,6 +166,7 @@ void delete_var(char *lineptr, struct node* head_ref)
                 current = current->nxtpointer;
         }
     }
+    return head_ref;
 }
 
 struct node * del_path(char *now)

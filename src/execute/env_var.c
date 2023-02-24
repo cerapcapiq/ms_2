@@ -80,6 +80,42 @@ void get_arg(char *lineptr)
     }
 }
 
+/*char * get_arg_content(char *lineptr)
+{ 
+    char *str = lineptr;
+    char *arg = str;
+    size_t j = 0;
+    char after[j];
+    char *new = NULL;
+
+    if ((arg = ft_strchr(str, '='))) 
+    {
+        size_t len = ft_strlen (++arg);
+        if (len > j - 1) 
+        {
+            printf("error");
+        } 
+        new = memcpy (after, arg, len + 1);
+        printf ("the arg(value) is %s\n", new);    
+    }
+    return new;
+}*/
+
+char * get_arg_content(char *lineptr)
+{
+size_t i = 0;
+ char *interesting_stuff;
+ while (i<strlen(lineptr)) 
+ {
+     if (lineptr[i] ==  '=')
+     {
+        interesting_stuff = lineptr + i + 2;
+     }
+     i++;
+ }
+ return interesting_stuff;
+}
+
 struct node *ft_var_main(char *argv, struct node *head_ref)
 {  
     struct node *temp = NULL;

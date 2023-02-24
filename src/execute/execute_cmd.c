@@ -24,10 +24,11 @@ int getenv_cmd(int argc, char **argv)
 	char **split;
 	int	i = 0;
 	split = NULL;
+	char *path;
 
 	if (argc < 1)
 		return (1);
-	char *path = getenv("PATH");
+	path = get_arg_content("PATH");
 
 	split = ft_split(path + 5, ':');
 	while (split[i] != NULL)
@@ -59,8 +60,9 @@ char *ft_getpath(char **av)
 	char **split;
 	int i = 0;
 	split = NULL;
+	char *path;
 
-	char *path = getenv("PATH");
+	path = ft_var_content("PATH", head_ref);
 
 	split = ft_split(path + 5, ':');
 	while (split[i] != NULL)
@@ -100,7 +102,7 @@ int call_cmd(char **av)
 	int i = 0;
 	int j = 0;
 	char *env[4028];
-
+	printf("kl %s", *av);
 
 	if (ft_strchr(*av, '/'))
 		{
@@ -120,6 +122,7 @@ int call_cmd(char **av)
 			if ((j = ft_ex(env, av, i)) == 0)
 				break;
 		}
+		printf("in env %s", *env);
 	}
 	return j;
 }
