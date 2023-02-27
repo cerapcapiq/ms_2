@@ -80,7 +80,9 @@ void show_var(char *lineptr, struct node *head)
         }
  }
 
- char *ft_var_content(char *lineptr, struct node *head)
+
+
+  char *ft_var_content(char *lineptr, struct node *head)
  {
         if (*lineptr == '$') lineptr++;
         char *contactName = lineptr;

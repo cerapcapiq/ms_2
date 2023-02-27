@@ -44,11 +44,23 @@ int getenv_cmd(int argc, char **argv)
 	return (0);
 }
 
+/*int	it_works(char *cmd_path)
+{
+	struct stat	buffer;
+
+	if (stat(cmd_path, &buffer) == 0 && buffer.st_mode & S_IXUSR)
+		return (1);
+	else
+		return (0);
+}*/
+
 int	it_works(char *cmd_path)
 {
 	struct stat	buffer;
 
 	if (stat(cmd_path, &buffer) != 0)
+		return (0);
+	if ((buffer.st_mode & S_IFMT) == S_IFDIR)
 		return (0);
 	if ((buffer.st_mode & S_IXUSR))
 		return (1);
@@ -79,16 +91,35 @@ char *ft_getpath(char **av)
 	return (split[i]);
 }
 
+char **ft_getenv()
+{
+	char **s = environ;
+  	int i = 0;
+
+	while (s[i] != NULL)
+	{
+		if (it_works(s[i]))
+		{
+			break;
+		}
+		i++;
+	}
+	return (s);
+}
+
 int ft_ex(char **argv, char **envp, int i)
 {
-	int	res;
+	int	res;	
+	//char *term = ft_getenv();
+	//char *path[] = {term, NULL};
+	//char *path = {term};
 
 	int pid = fork();
 	if (!pid)
 	{
 		printf("inside executiuon\n");
 		argv[i] = 0;
-		execve(*argv, envp, NULL);
+		execve(*argv, envp, ft_getenv());
 		return printf("error");
 	}
 	if (waitpid(pid, &res, 0) == -1)
@@ -102,7 +133,6 @@ int call_cmd(char **av)
 	int i = 0;
 	int j = 0;
 	char *env[4028];
-	printf("kl %s", *av);
 
 	if (ft_strchr(*av, '/'))
 		{
@@ -115,14 +145,13 @@ int call_cmd(char **av)
 		}
 	
 	else
-	{
+	{ 
 		*env = ft_getpath(av);
 		while (av[i++])
 		{
 			if ((j = ft_ex(env, av, i)) == 0)
-				break;
+					break;
 		}
-		printf("in env %s", *env);
 	}
 	return j;
 }
