@@ -150,7 +150,6 @@ t_token	*new_token(t_mini *mini, char *data)
 	res = (t_token *)malloc(sizeof(t_token));
 
 	if (ft_detect_quote(data) == 1)
-		printf("good");
 
 	if (ft_detect_quote(data))
 	{
@@ -159,7 +158,6 @@ t_token	*new_token(t_mini *mini, char *data)
 		res->type = ARG;
 		res->prev = 0;
 		res->next = 0;
-		printf("new is %s", new);
 	}
 	else
 	{
