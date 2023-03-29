@@ -35,6 +35,9 @@
 # define PIPE 8
 # define ENV 9
 
+# define PROMPT		0
+# define EOT		100
+
 // str - token string
 // type - token type
 // prev and next - linked list pointers to previous and next token
@@ -68,6 +71,12 @@ struct node
   struct node *nxtpointer;
 }*head_ref;
 
+typedef struct LinkedList *node; //Define node as pointer of data type struct LinkedList
+
+struct LinkedList{
+    char * data;
+    struct LinkedList *next;
+ }*head;
 //init signals, pipes etc
 typedef struct s_global
 {
@@ -80,6 +89,7 @@ extern t_global g_global;
 extern char **environ;
 
 //parser
+char * display_readline(char *input);
 int		ft_strcmp(char *s1, char *s2);
 void	print_tokens(t_token *tokens);
 int		builtin_cmd(char *token);
@@ -91,6 +101,8 @@ int		create_pipe(t_mini *mini);
 int		redirect_output(t_mini *ms, t_token *token, int type);
 int		redirect_input(t_mini *ms, t_token *token);
 void	parse(t_mini *mini, char *buff);
+int ft_single_detect_quote(char *data);
+int ft_double_detect_quote(char *data);
 struct node* ft_link_env();
 
 //execute
@@ -104,6 +116,7 @@ int		getenv_cmd(int argc, char **argv);
 char	*traverse_dir(char *path, char *exe);
 int		call_cmd(char **argv);
 int		execute(t_mini *mini);
+int     ft_clear_data(char *data);
 
 //builtin_commands
 int		echo(int argc, char **argv);
@@ -113,9 +126,25 @@ int		cd(int argc, char **argv);
 
 //int ft_var(char *argv, struct node *head);
 struct node * ft_var_main(char *argv, struct node *head);
-struct node* createList(struct node **head_ref, char *lineptr);
+struct node* create_list(struct node **head_ref, char *lineptr);
 struct node* display_node(struct node *head_ref);
 int ft_var(char **argv);
+void ft_add_back(char *cpy);
+
+ char *ft_var_content(char *lineptr, struct node *head);
+char * get_arg_content(char *lineptr);
+
+struct LinkedList* display_linked_node(struct LinkedList *head);
+char *ft_add_var_content(char *lineptr, struct LinkedList *head);
+struct LinkedList* add_to_var(char *str, struct LinkedList *head);
+char *get_the_new_var(char *lineptr, struct LinkedList *head);
+char *strremove(char *str, const char *sub);
+
+struct LinkedList* createNode();
+struct LinkedList*  addNode(node head, char *value);
+void moving_the_node(char *str);
+
+
 //signal
 void	define_signal(void);
 void 	disable_veof(void);
