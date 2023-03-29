@@ -28,11 +28,36 @@ void	init_main(int argc, char **argv)
 	}
 }
 
+int ft_whitespace(char *av)
+{
+	int i = 0;
+	while (av[i])
+	{
+		if (av[i] == ' ' && av[i+1] == '\0')
+			{printf("nope");
+			free(av);
+			return 1;}
+		else if (av[i] == ' ')
+			i++;		
+		else 
+			return 0;
+	}
+	return 0;
+}	
+
+char * display_readline(char *input)
+{
+	input = readline("@minishell> ");
+	return (input);
+}
+
 static void read_input(t_mini *mini, char *input)
 {
 
-	input = readline("@minishell> ");
-	disable_veof();
+	input = display_readline(input);
+	//input = readline("@minishell> ");
+	//disable_veof();
+	
 	parse(mini, input);
 	add_history(input);	
 	dup2(mini->stdin, STDIN_FILENO);
@@ -45,9 +70,9 @@ int	main(int argc, char *argv[])
 	t_mini	*mini;
 	char	*buff;
 
+	define_signal();
 	init_main(argc, argv);
 	mini = init_mini();
-	define_signal();
 	head_ref = ft_link_env();
 	while (1)
 	{
