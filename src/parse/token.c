@@ -149,8 +149,6 @@ t_token	*new_token(t_mini *mini, char *data)
 
 	res = (t_token *)malloc(sizeof(t_token));
 
-	if (ft_detect_quote(data) == 1)
-
 	if (ft_detect_quote(data))
 	{
 		new = ft_delete_quote(data);
@@ -159,8 +157,7 @@ t_token	*new_token(t_mini *mini, char *data)
 		res->prev = 0;
 		res->next = 0;
 	}
-	else
-	{
+    else {
 	res->str = ft_strdup(data);
 	res->type = token_type(mini, data);
 	res->prev = 0;
