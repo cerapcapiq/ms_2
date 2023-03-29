@@ -1,6 +1,8 @@
 #include "../include/minishell.h"
 
 //calls the a propreate function to execute
+
+
 int	execute(t_mini *mini)
 {
 	char	**argv;
@@ -15,7 +17,8 @@ int	execute(t_mini *mini)
 		tok = tok->next;
 		while (tok && tok->type == ARG)
 			tok = tok->next;
-		call_pipe_redirect(mini, command, tok);
+		//if (tok->type != ARG)
+			call_pipe_redirect(mini, command, tok);
 		if (command->type == BUILTIN)
 			mini->execute_code = execute_builtin(argv, command->str, mini);
 		else if (command->type == CMD)

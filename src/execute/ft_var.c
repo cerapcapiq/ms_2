@@ -2,89 +2,27 @@
 #include "../libft/libft.h"
 #define j 100000000
 
-struct node* ft_link_env()
-{
-  char **s = environ;
-
-  while (*s) 
-  {
-    head_ref = ft_var_main(*s, head_ref);
-    s++;
-  }
-    return head_ref;
-}
-
-
-void get_env()
-{
-  char **s = environ;
-  int i = 0;
-
-  while (s[i] != NULL) 
-  {
-    printf("[%d] = %s \n",i, s[i]);
-    i++;
-  }
-    return;
-}
-
-/*void check_old_path()
-{
-      char **s = environ;
-      int i = 0;
-
-  while (s[i]) 
-  {
-    if (strstr(s[i], "OLDPWD"))
-    printf("%s\n [%d] \n", s[i], i);
-    i++;
-  }
-}
-*/
-/*
-char * get_arg_to_del(char *lineptr)
-{ 
-    char *str = lineptr;
-    char *arg = str;
-    char after[j];
-
-    if ((arg = ft_strchr(str, ' ')) || (arg = ft_strchr(str, '$'))) 
-    {
-        size_t len = strlen (++arg);
-        if (len > j - 1) 
-        {
-            printf("error");
-        } 
-        memcpy (after, arg, len + 1);  
-        
-    }
-    return (arg);
-}
-*/
 void show_var(char *lineptr, struct node *head)
- {
-        if (*lineptr == '$') lineptr++;
+{
+    int i = 1;
+    if (*lineptr == '$') lineptr++;
         char *contactName = lineptr;
-        int i = 1;
-
-        struct node *temp = head;
-        while (temp != NULL)
+    struct node *temp = head;
+    while (temp != NULL)
+    {
+        if (strstr(temp->data, contactName))
         {
-            if (strstr(temp->data, contactName))
-            {
-                printf("$var saved is : %s\n",temp->data);
-                printf("saved in the %d th place\n", i);
-            }
-            temp = temp->nxtpointer;
-            i++;
+            printf("$var saved is : %s\n",temp->data);
+            printf("saved in the %d th place\n", i);
         }
- }
+        temp = temp->nxtpointer;
+        i++;
+    }
+}
 
-
-
-  char *ft_var_content(char *lineptr, struct node *head)
- {
-        if (*lineptr == '$') lineptr++;
+char *ft_var_content(char *lineptr, struct node *head)
+{
+    if (*lineptr == '$') lineptr++;
         char *contactName = lineptr;
         char *new = NULL;
         int i = 1;
@@ -99,40 +37,22 @@ void show_var(char *lineptr, struct node *head)
             temp = temp->nxtpointer;
             i++;
         }
-        return new;
- }
-
-/*
-char *select_var(char *lineptr, struct node *head_ref)
-{
-    if (*lineptr == '$') lineptr++;
-    char *var_chosen = lineptr;
-    int i = 0;
-    
-    struct node* temp = head_ref;
-    while (temp != NULL)
-    {
-        if (strstr(temp->data, var_chosen))
-        {
-            retu
-        }
-    }
+    return new;
 }
-*/
 
 char * get_arg_to_del(char *lineptr)
 {
-size_t i = 0;
- char *interesting_stuff;
- while (i<strlen(lineptr)) 
- {
-     if (lineptr[i] ==  ' ')
-     {
-        interesting_stuff = lineptr + i + 1;
-     }
-     i++;
- }
- return interesting_stuff;
+    size_t i = 0;
+    char *interesting_stuff;
+    while (i<strlen(lineptr)) 
+    {
+        if (lineptr[i] ==  ' ')
+        {
+            interesting_stuff = lineptr + i + 1;
+        }
+        i++;
+    }
+    return interesting_stuff;
 }
 
 struct node * delete_var(char *lineptr, struct node* head_ref)
@@ -209,21 +129,31 @@ void ft_add_back(char *cpy)
     }
 }
 
- void ft_linked_list(char *cpy)
+void ft_linked_list(char *cpy)
 {
-    if (ft_strchr(cpy, '='))
-    	ft_add_back(cpy); 
-    else if (ft_strchr(cpy, '$'))
+    if (ft_strchr(cpy, '$'))
             show_var(cpy, head_ref);
-    else if (strstr(cpy, "unset"))
+    else if (strstr(cpy, "unset "))
           delete_var(cpy, head_ref);
     else if (!ft_strcmp(cpy, "unset $PATH"))
             del_path("$PATH=");
-    else if (!ft_strcmp(cpy, "env"))
-     
+    else if (!ft_strcmp(cpy, "env") || !ft_strcmp(cpy, "export"))
         display_node(head_ref);
-        //ft_link_env();}
-        //display_node(head_ref);}
+    else if (strstr(cpy, "export "))
+    {
+        cpy = strremove(cpy, "export ");
+        cpy = get_the_new_var(cpy, head);
+        if (cpy != NULL)
+            ft_add_back(cpy);
+        else
+            printf("non exisxtent");
+    }
+    else if (ft_strchr(cpy, '=') && !strstr(cpy, "export ") && !strstr(cpy, "unset "))
+    {
+        head = add_to_var(cpy, head);
+        display_linked_node(head);
+    }
+        
     else
         return;
 
