@@ -97,11 +97,17 @@ char	**ft_split(char const *s, char c)
 	if (!(tab = malloc(sizeof(char *) * (nb_strs + 1))))
 		return (NULL);
 	i = 0;
+
 	next_str = (char *)s;
 	next_str_len = 0;
 	while (i < nb_strs)
 	{
-		ft_get_next_str(&next_str, &next_str_len, c);
+		if (*next_str == '\'')
+			ft_get_next_str(&next_str, &next_str_len, '\'');
+		else if (*next_str == '\"')
+			ft_get_next_str(&next_str, &next_str_len, '\"');
+		else 
+			ft_get_next_str(&next_str, &next_str_len, c);
 		if (!(tab[i] = malloc(sizeof(char) * (next_str_len + 1))))
 			return (ft_malloc_error(tab));
 		ft_strlcpy(tab[i], next_str, next_str_len + 1);
