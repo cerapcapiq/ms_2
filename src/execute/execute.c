@@ -8,6 +8,7 @@ int	execute(t_mini *mini)
 	char	**argv;
 	t_token	*tok;
 	t_token	*command;
+	int save_fd[2];
 
 	tok = mini->tokens;
 	while (tok)
@@ -23,6 +24,8 @@ int	execute(t_mini *mini)
 			mini->execute_code = execute_builtin(argv, command->str, mini);
 		else if (command->type == CMD)
 			mini->execute_code = call_cmd(argv);
+		else if (command->type == HEREDOC)
+			here_doc_input(*argv, save_fd);
 		agrv_free(argv);
 	}
 	return (0);

@@ -63,7 +63,10 @@ struct node * delete_var(char *lineptr, struct node* head_ref)
 
     //if ((ft_strchr(str, ' ')) || (ft_strchr(str, '$')))
     //    str++;
+ 
     p = get_arg_to_del(lineptr);
+    if (*p == '$')
+        p++;
     printf("$var to be unset is %s", p);
     if (strstr(head_ref->data, p))
     {
@@ -131,30 +134,20 @@ void ft_add_back(char *cpy)
 
 void ft_linked_list(char *cpy)
 {
-    if (ft_strchr(cpy, '$'))
+    if (ft_dollar_sign(cpy))
+        printf("dollar exist , dub quote");
+    else if (ft_strchr(cpy, '$') && !strstr(cpy, "export $"))
             show_var(cpy, head_ref);
     else if (strstr(cpy, "unset "))
           delete_var(cpy, head_ref);
-    else if (!ft_strcmp(cpy, "unset $PATH"))
-            del_path("$PATH=");
-    else if (!ft_strcmp(cpy, "env") || !ft_strcmp(cpy, "export"))
+    else if (!ft_strcmp(cpy, "env"))
         display_node(head_ref);
-    else if (strstr(cpy, "export "))
-    {
-        cpy = strremove(cpy, "export ");
-        cpy = get_the_new_var(cpy, head);
-        if (cpy != NULL)
-            ft_add_back(cpy);
-        else
-            printf("non exisxtent");
-    }
     else if (ft_strchr(cpy, '=') && !strstr(cpy, "export ") && !strstr(cpy, "unset "))
     {
         head = add_to_var(cpy, head);
         display_linked_node(head);
     }
-        
-    else
-        return;
+    ft_export(cpy);
+    ft_unset(cpy);       
 
 }

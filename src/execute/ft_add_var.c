@@ -65,16 +65,17 @@ struct LinkedList *ft_create_list(struct LinkedList **head, char *str)
 char *get_the_new_var(char *lineptr, struct LinkedList *head)
 {
     int i = 1;
-    if (*lineptr == '$') lineptr++;
-        char *contactName = lineptr;
+    if (*lineptr == '$')
+        lineptr++;
+    char *search = lineptr;
     struct LinkedList *temp = head;
     while (temp != NULL)
     {
-        if (strstr(temp->data, contactName))
+        if (strstr(temp->data, search))
         {
             printf("$var saved is : %s\n",temp->data);
             printf("saved in the %d th place\n", i);
-            return contactName;
+            return temp->data;
         }
         temp = temp->next;
         i++;
