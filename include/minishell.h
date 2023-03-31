@@ -13,6 +13,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
+# include <stdbool.h>
 # include "../libft/libft.h"
 
 // Token types
@@ -104,10 +105,12 @@ void	parse(t_mini *mini, char *buff);
 int ft_single_detect_quote(char *data);
 int ft_double_detect_quote(char *data);
 struct node* ft_link_env();
+struct node * delete_var(char *lineptr, struct node* head_ref);
 
 //execute
 int		count_argc(char **args);
 void	call_pipe_redirect(t_mini *mini, t_token *command, t_token *tok);
+void	here_doc_input(char *eof, int *save_fd);
 char	**convert_argv(t_token	*tokens);
 int		call_builtin(char **argv, char *command);
 int		execute_builtin(char **argv, char *command, t_mini *ms);
@@ -117,6 +120,7 @@ char	*traverse_dir(char *path, char *exe);
 int		call_cmd(char **argv);
 int		execute(t_mini *mini);
 int     ft_clear_data(char *data);
+int ft_dollar_sign(char *str);
 
 //builtin_commands
 int		echo(int argc, char **argv);
@@ -143,6 +147,10 @@ char *strremove(char *str, const char *sub);
 struct LinkedList* createNode();
 struct LinkedList*  addNode(node head, char *value);
 void moving_the_node(char *str);
+
+void ft_unset(char *str);
+
+void ft_export(char *str);
 
 
 //signal
