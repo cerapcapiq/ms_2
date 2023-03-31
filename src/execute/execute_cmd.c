@@ -74,9 +74,12 @@ char *ft_getpath(char **av)
 	split = NULL;
 	char *path;
 
-	path = ft_var_content("PATH", head_ref);
+	if (!(path = ft_var_content("PATH", head_ref)))
+		{printf("no path");
+		return (NULL);}
 
-	split = ft_split(path + 5, ':');
+	else
+	{split = ft_split(path + 5, ':');
 	while (split[i] != NULL)
 	{
 		split[i] = ft_strjoin(split[i], "/");
@@ -88,7 +91,8 @@ char *ft_getpath(char **av)
 		i++;
 	}
 
-	return (split[i]);
+	return (split[i]);}
+	return NULL;
 }
 
 char **ft_getenv()
@@ -117,7 +121,6 @@ int ft_ex(char **argv, char **envp, int i)
 	int pid = fork();
 	if (!pid)
 	{
-		printf("inside executiuon\n");
 		argv[i] = 0;
 		execve(*argv, envp, ft_getenv());
 		return printf("error");
