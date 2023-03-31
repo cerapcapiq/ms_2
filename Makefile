@@ -14,13 +14,13 @@ BLUE		=	\033[0;94m
 WHITE		=	\033[0;97m
 
 BLT_DIR		=	builtin/
-BLT_FILES	=	echo pwd exit cd
+BLT_FILES	=	echo pwd exit cd export_unset
 EXECUTE_DIR	=	execute/
 EXECUTE_FILES	=	execute_utils execute_builtin execute_cmd execute env_var ft_var ft_add_var ft_env_var
 MAIN_DIR	=	main/
 MAIN_FILES	=	minishell signal
 PARSE_DIR	=	parse/
-PARSE_FILES	=	parser_utils parser pipe token redirection
+PARSE_FILES	=	parser_utils parser pipe token redirection ft_dollar
 FREE_DIR	=	free/
 FREE_FILES	=	mem_free
 
