@@ -5,8 +5,7 @@ struct node* display_node(struct node *head_ref)
     struct node* temp; 
     temp = head_ref; // temp points to head;
     printf("\n");
-    //if (temp == NULL)
-    //    printf(" NULL\n\n");
+
     while (temp != NULL) {
         if (temp->nxtpointer == NULL) {
             printf(" %s->NULL\n", temp->data);
@@ -85,7 +84,7 @@ struct node* create_list(struct node **head_ref, char *lineptr)
     {
         last = last->nxtpointer;
     }
-   last->nxtpointer = new;  // keep address to link to next node
+   last->nxtpointer = new;
   }
   return (*head_ref);
 }
